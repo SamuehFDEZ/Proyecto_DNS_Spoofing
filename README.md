@@ -52,6 +52,22 @@ Bettercap es un poderoso, fácilmente extensible, y framework portable escrito e
 
 Los protocolos vulnerados en el DNS Spoofing incluyen el Protocolo de Resolución de Nombres (DNS), que es el sistema que traduce los nombres de dominio en direcciones IP. Los atacantes pueden manipular esta traducción para redirigir el tráfico de los usuarios hacia sitios web maliciosos. Además, el Protocolo de Resolución de Direcciones de Protocolo de Resolución (ARP), que permite a los dispositivos localizar direcciones IP a partir de nombres de dominio, también puede ser utilizado para redirigir el tráfico hacia servidores maliciosos.
 
-## 6. Pasos importantes de la PoC (Prove of Concept) y pasos para su mitigación. 
+## 6. Pasos importantes de la PoC (Prove of Concept) y pasos para su mitigación
+
+### 1. Instalar bettercap
 ```bash
 sudo apt install bettercap
+```
+### 2. Iniciar bettercap 
+
+```bash
+sudo bettercap
+```
+### 3. Iniciar net.probe 
+```bash
+net.probe on
+```
+### 4. Iniciar ticker 
+```bash
+ticker on
+```
