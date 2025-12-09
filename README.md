@@ -68,62 +68,85 @@ sudo apt install bettercap
 ```bash
 sudo bettercap
 ```
+
+Una vez iniciado bettercap, tenemos una interfaz muy simple para introducir los comandos de la herramienta, bettercap funciona por módulos, cada módulo tiene submodulos, al fin y al cabo son scripts que automatizan las tareas, bettercap se caracteriza por su rapidez por usar GoLang
+
 ---- 
 ### 3. Iniciar net.probe 
 ```bash
 net.probe on
 ```
+
+Lo primero que hacemos es escanear la red, para ello usamos net.probe, este módulo nos devolverá todas las IPs conectadas a la red
+
 ---- 
 ### 4. Iniciar ticker 
 ```bash
 ticker on
 ```
+Ticker lo usaremos para mejorar el comando previo, ya que ticker nos imprime una tabla con formato de las IPs mencionadas junto a su MAC, tipo de red, si es ethernet o gateway, nombre del equipo, y los paquetes enviados y recibidos
+
 ---- 
 ### 5. Asignar la IP de la victima al envenenamiento ARP
 ```bash
 set arp.spoof targets <IPVictima>
 ```
+El paso previo al DNS spoofin es el ARP spoofing, bastará con usar el módulo arp.spoof, como parámetro targeets, asignaremos la IP víctima, el módulo lo guardará en memoria para su futuro uso, si decidimos cambiar la asignación, arp.spoof eliminará el valor previo por el más reciente
+
 ---- 
 ### 6. Iniciar arp spoofng 
 ```bash
 arp.spoof on
 ```
+Para iniciar el módulo basta con incluir la palabra reservada on para encenderlo, bettercap nos devería mostrar un mensaje informativo sobre el evenenamiento aplicado a los objetivos dentro de la red especificada
+
 ---- 
 ### 7. Capturar el trafico de red como si de un wireshark se tratase 
 ```bash
 set net.sniff.verbose false
 ```
+Para aligerar la información que recibimos de bettercap usaremos el módulo net.sniff, al igual que la herramienta wireshark, net.sniff nos permite capturar el tráfico de red, esto es muy útil ya que para la práctica, al realizar MITM (Man In The Middle) estamos entre la victima e Internet, por lo que obtenemos todo su tráfico, pudiendo predecir su comportamiento en la red y facilitar el engaño a la víctima 
+
 ```bash
 set net.sniff on
 ```
 ---- 
+Activamos el módulo al igual que hicimos con el de arp.spoof y ya capturaríamos el tráfico de la víctima
+
 ### 8. Comprobar que el ataque ha funcionado realizando el comando en la victima
 ```bash
 arp -a
 ```
-Deberíamos de ver que, tanto la puerta de enlace como la IP de la máquina Kali, coinciden
+Si accedemos a la tabla arp de la víctima veremos que la dirección MAC de la puerta de enlace coincide con nuestra dirección MAC de nuestra máquina atacante
+
 ---- 
 ### 9. Configurar servidor apache
 ```bash
 apt install apache2
 ```
----- 
 Usaremos apache para almacenar la web que se alojará en el dominio e IP falsa que proporcionaremos a la víctima
+
 ---- 
 ### 10. Asignar valor de dominio a dns spoof
 ```bash
 set dns.spoof.domains <nombreDominio>
 ```
+Ya instalado y configurado el servidor apache que almacena la página falsa para la víctima usaremos el módulo dns.spoof que será el que realice el envenenamiento DNS, con el submódulo domains asignamos un nombre de dominio cualquiera, a poder ser parecido al real, por ejemplo aules.com
+
 ---- 
 ### 11. Redirigir a la victima a nuestra IP atacante
 ```bash
 set dns.spoof.address <IPatacante>
 ```
+Ahora, al igual que el dominio, con el submódulo address asignamos nuestra propia IP de la máquina kali, si recordamos las explicaciones anteriores, al tener la dirección MAC de la máquina atacante en la puerta de enlace de la víctima, se le redirigirá si introduce el nombre de dominio a nuestra IP de kali, y, al tener el servidor apache en funcionamiento, abrirá la página web alojada
+
 ---- 
 ### 12. Activar el servicio
 ```bash
 dns.spoof on
 ```
+Al igual que con arp.spoof y net.sniff activamos el módulo con el comando mostrado, y si la víctima accede a aules.com, verá la página falsa
+
 ---- 
 
 https://github.com/user-attachments/assets/e32adbfc-eac0-4319-9ae4-3de36f6d18bd
